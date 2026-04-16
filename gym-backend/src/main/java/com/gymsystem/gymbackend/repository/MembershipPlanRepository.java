@@ -1,0 +1,9 @@
+package com.gymsystem.gymbackend.repository;
+
+import com.gymsystem.gymbackend.entity.MembershipPlan;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface MembershipPlanRepository extends JpaRepository<MembershipPlan, Integer> {
+}
