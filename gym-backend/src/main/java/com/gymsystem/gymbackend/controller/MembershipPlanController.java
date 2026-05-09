@@ -1,46 +1,64 @@
 package com.gymsystem.gymbackend.controller;
 
 import com.gymsystem.gymbackend.entity.MembershipPlan;
-import com.gymsystem.gymbackend.service.MembershipPlanService;
+import com.gymsystem.gymbackend.repository.MembershipPlanRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/membership-plans")
-@CrossOrigin(origins = "http://localhost:5174")
+@CrossOrigin(origins = "*")
 public class MembershipPlanController {
 
-    private final MembershipPlanService membershipPlanService;
+    private final MembershipPlanRepository repository;
 
-    public MembershipPlanController(MembershipPlanService membershipPlanService) {
-        this.membershipPlanService = membershipPlanService;
+    public MembershipPlanController(MembershipPlanRepository repository) {
+        this.repository = repository;
     }
 
+    // GET all plans
     @GetMapping
     public List<MembershipPlan> getAllPlans() {
-        return membershipPlanService.getAllPlans();
+        return repository.findAll();
     }
 
+    // GET plan by ID
     @GetMapping("/{id}")
-    public MembershipPlan getPlanById(@PathVariable Integer id) {
-        return membershipPlanService.getPlanById(id)
-                .orElseThrow(() -> new RuntimeException("Membership plan not found with id: " + id));
+    public ResponseEntity<MembershipPlan> getPlanById(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // POST create new plan
     @PostMapping
-    public MembershipPlan createPlan(@RequestBody MembershipPlan membershipPlan) {
-        return membershipPlanService.savePlan(membershipPlan);
+    public MembershipPlan createPlan(@RequestBody MembershipPlan plan) {
+        return repository.save(plan);
     }
 
+    // PUT update existing plan
     @PutMapping("/{id}")
-    public MembershipPlan updatePlan(@PathVariable Integer id, @RequestBody MembershipPlan membershipPlan) {
-        return membershipPlanService.updatePlan(id, membershipPlan);
+    public ResponseEntity<MembershipPlan> updatePlan(@PathVariable Long id, @RequestBody MembershipPlan planDetails) {
+        return repository.findById(id)
+                .map(existingPlan -> {
+                    existingPlan.setPlanName(planDetails.getPlanName());
+                    existingPlan.setDurationMonths(planDetails.getDurationMonths());
+                    existingPlan.setPrice(planDetails.getPrice());
+                    existingPlan.setFeatures(planDetails.getFeatures());
+                    return ResponseEntity.ok(repository.save(existingPlan));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // DELETE plan
     @DeleteMapping("/{id}")
-    public String deletePlan(@PathVariable Integer id) {
-        membershipPlanService.deletePlan(id);
-        return "Membership plan deleted successfully";
+    public ResponseEntity<Void> deletePlan(@PathVariable Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

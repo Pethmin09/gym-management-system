@@ -20,7 +20,7 @@ public class MembershipPlanService {
         return membershipPlanRepository.findAll();
     }
 
-    public Optional<MembershipPlan> getPlanById(Integer id) {
+    public Optional<MembershipPlan> getPlanById(Long id) {
         return membershipPlanRepository.findById(id);
     }
 
@@ -28,7 +28,7 @@ public class MembershipPlanService {
         return membershipPlanRepository.save(membershipPlan);
     }
 
-    public MembershipPlan updatePlan(Integer id, MembershipPlan updatedPlan) {
+    public MembershipPlan updatePlan(Long id, MembershipPlan updatedPlan) {
         return membershipPlanRepository.findById(id)
                 .map(existingPlan -> {
                     existingPlan.setPlanName(updatedPlan.getPlanName());
@@ -40,7 +40,7 @@ public class MembershipPlanService {
                 .orElseThrow(() -> new RuntimeException("Membership plan not found with id: " + id));
     }
 
-    public void deletePlan(Integer id) {
+    public void deletePlan(Long id) {
         membershipPlanRepository.deleteById(id);
     }
 }
