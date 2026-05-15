@@ -11,7 +11,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class MemberController {
 
-      private final MemberService memberService;
+    private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
