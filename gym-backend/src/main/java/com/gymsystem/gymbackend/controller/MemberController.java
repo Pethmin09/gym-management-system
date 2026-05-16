@@ -5,6 +5,7 @@ import com.gymsystem.gymbackend.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/members")
@@ -14,7 +15,9 @@ public class MemberController {
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
+
         this.memberService = memberService;
+
     }
 
     @GetMapping
@@ -42,5 +45,10 @@ public class MemberController {
     public String deleteMember(@PathVariable Integer id) {
         memberService.deleteMember(id);
         return "Member deleted successfully";
+    }
+
+    @PostMapping("/login")
+    public Member loginMember(@RequestBody Member loginData) {
+        return memberService.loginMember(loginData.getEmail(), loginData.getPassword());
     }
 }

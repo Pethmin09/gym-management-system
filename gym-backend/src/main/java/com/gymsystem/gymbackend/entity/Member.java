@@ -20,15 +20,19 @@ public class Member extends Person {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
+    @Column(nullable = false)
+    private String membershipPlan;
+
     public Member() {
     }
 
     public Member(String fullName, String phone, String address, String gender,
-                  String email, String password, LocalDate dateOfBirth) {
+                  String email, String password, LocalDate dateOfBirth, String membershipPlan) {
         super(fullName, phone, address, gender);
         this.email = email;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
+        this.membershipPlan = membershipPlan;
     }
 
     public Integer getMemberId() {
@@ -53,6 +57,14 @@ public class Member extends Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getMembershipPlan() {
+        return membershipPlan;
+    }
+
+    public void setMembershipPlan(String membershipPlan) {
+        this.membershipPlan = membershipPlan;
     }
 
     public LocalDate getDateOfBirth() {

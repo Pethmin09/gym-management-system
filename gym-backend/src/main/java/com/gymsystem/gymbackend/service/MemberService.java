@@ -38,6 +38,7 @@ public class MemberService {
                     existingMember.setEmail(updatedMember.getEmail());
                     existingMember.setPassword(updatedMember.getPassword());
                     existingMember.setDateOfBirth(updatedMember.getDateOfBirth());
+                    existingMember.setMembershipPlan(updatedMember.getMembershipPlan());
                     return memberRepository.save(existingMember);
                 })
                 .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
@@ -45,5 +46,16 @@ public class MemberService {
 
     public void deleteMember(Integer id) {
         memberRepository.deleteById(id);
+    }
+
+    public Member loginMember(String email, String password) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email not found"));
+
+        if (!member.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return member;
     }
 }
