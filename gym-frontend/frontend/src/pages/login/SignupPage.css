@@ -262,3 +262,18 @@
     font-size: 18px;
   }
 }
+.signup-input-group select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+.signup-input-group select option {
+  background: #111;
+  color: white;
+}
