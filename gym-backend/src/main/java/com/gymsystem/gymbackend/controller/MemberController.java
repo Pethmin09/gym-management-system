@@ -5,6 +5,7 @@ import com.gymsystem.gymbackend.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/members")
@@ -19,28 +20,55 @@ public class MemberController {
 
     @GetMapping
     public List<Member> getAllMembers() {
-        return memberService.getAllMembers();
+        List<Member> members = memberService.getAllMembers();
+        return members;
     }
 
     @GetMapping("/{id}")
     public Member getMemberById(@PathVariable Integer id) {
-        return memberService.getMemberById(id)
-                .orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
+        Optional<Member> optionalMember = memberService.getMemberById(id);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return member;
+        } else {
+            throw new RuntimeException("Member not found with id: " + id);
+        }
     }
 
     @PostMapping
     public Member createMember(@RequestBody Member member) {
-        return memberService.saveMember(member);
+        Member savedMember;
+        savedMember = memberService.saveMember(member);
+        return savedMember;
     }
 
     @PutMapping("/{id}")
     public Member updateMember(@PathVariable Integer id, @RequestBody Member member) {
-        return memberService.updateMember(id, member);
+        Member updatedMember;
+        updatedMember = memberService.updateMember(id, member);
+        return updatedMember;
     }
 
     @DeleteMapping("/{id}")
     public String deleteMember(@PathVariable Integer id) {
+        String message;
         memberService.deleteMember(id);
-        return "Member deleted successfully";
+        message = "Member deleted successfully";
+        return message;
+    }
+
+    @PostMapping("/login")
+    public Member loginMember(@RequestBody Member loginData) {
+
+        String email;
+        String password;
+        Member loggedMember;
+
+        email = loginData.getEmail();
+        password = loginData.getPassword();
+
+        loggedMember = memberService.loginMember(email, password);
+
+        return loggedMember;
     }
 }
