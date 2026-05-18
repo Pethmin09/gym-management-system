@@ -17,15 +17,30 @@ public class MemberService {
     }
 
     public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+
+        List<Member> members;
+
+        members = memberRepository.findAll();
+
+        return members;
     }
 
     public Optional<Member> getMemberById(Integer id) {
-        return memberRepository.findById(id);
+
+        Optional<Member> member;
+
+        member = memberRepository.findById(id);
+
+        return member;
     }
 
     public Member saveMember(Member member) {
-        return memberRepository.save(member);
+
+        Member savedMember;
+
+        savedMember = memberRepository.save(member);
+
+        return savedMember;
     }
 
     public Member updateMember(Integer id, Member updatedMember) {
@@ -45,17 +60,47 @@ public class MemberService {
     }
 
     public void deleteMember(Integer id) {
-        memberRepository.deleteById(id);
+
+        Optional<Member> optionalMember;
+
+        optionalMember = memberRepository.findById(id);
+
+        if (optionalMember.isPresent()) {
+
+            memberRepository.deleteById(id);
+
+        } else {
+
+            throw new RuntimeException("Member not found with id: " + id);
+
+        }
     }
 
     public Member loginMember(String email, String password) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Email not found"));
 
-        if (!member.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid password");
+        Optional<Member> optionalMember;
+        Member member;
+
+        optionalMember = memberRepository.findByEmail(email);
+
+        if (optionalMember.isPresent()) {
+
+            member = optionalMember.get();
+
+            if (member.getPassword().equals(password)) {
+
+                return member;
+
+            } else {
+
+                throw new RuntimeException("Invalid password");
+
+            }
+
+        } else {
+
+            throw new RuntimeException("Email not found");
+
         }
-
-        return member;
     }
 }
