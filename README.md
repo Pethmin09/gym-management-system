@@ -8,6 +8,8 @@ This project is a web-based gym management system developed using:
 
 ## Student Contribution
 - IT25101783 - Frontend development and Membership CRUD
+- IT25101654 - Gym Equipment Management CRUD System (Backend + Frontend Integration)
+  
 
 ## Modules
 - Member Management
@@ -30,3 +32,13 @@ This project is a web-based gym management system developed using:
 - Frontend pages created
 - Spring Boot backend project initialized
 - Database created in MySQL
+
+## Workload
+- IT25101654 - Gym Equipment Management CRUD System (Backend + Frontend Integration)
+
+  - Implemented full Equipment CRUD (Add, View, Update, Delete)
+  - Developed Admin Dashboard and Customer Dashboard UI
+  - Added search and pagination features
+  - Implemented file handling (log system using FileWriter)
+  - Designed dashboard with statistics (Total, Available, Broken equipment)
+  - Integrated MySQL database with JDBC
